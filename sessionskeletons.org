@@ -47,9 +47,6 @@
   # programmtic implementation based on
   #https://content.iospress.com/download/technology-and-health-care/thc174836?id=technology-and-health-care%2Fthc174836
   
-  # ACTUAL TODO add survey about DEAPU
-  # ACTUAL TODO add / look into adding nwb processing modules
-  # ACTUAL TODO look into making org file in subject folder detailing their progress with the DEAP videos
   from brainflow.data_filter import DataFilter, FilterTypes, AggOperations
   from scipy.stats import entropy
   import pandas as pd
@@ -82,7 +79,6 @@
 #+END_SRC       
 *** terminal
 #+BEGIN_SRC python
-  # actual todo add arguments for the different dimensions
   # session_path
   #if os.path.isfile('subjects/' + str(subject_id) + '/calibration_knn.csv'):
   #    calibration_csv = pd.read_csv('subjects/' + str(subject_id) + '/calibration_knn.csv') # read in the csv 
@@ -119,8 +115,7 @@
               channel_number = eeg_channels[channel_number]
               print(channel_number)
               numpy_channel = np.array(channel[(window_idx * 500):((window_idx * 500) + 1000)])
-  
-              # ACTUAL TODO TEST vvvvv change back or investigate further
+               
               normalized_channel = (numpy_channel - numpy_channel.min()) / (numpy_channel.max() - numpy_channel.min())
               #^^^^^^ using min-max normalization ^^^^^^
               window_data = normalized_channel
@@ -139,10 +134,7 @@
               #print(beta_band)
               #print(gamma_band)
               #print(theta_band)
-              # if needed you should convert the bands to np again if datafilter doesn't return an np array
-              # REAL ACTUAL TODO you gotta do DWT
-              #print('alpha band: ', alpha_band)
-              #print(entr(list(alpha_band)))
+              # if needed you should convert the bands to np again if datafilter doesn't return an np array              
               knn_feature_point['channel ' + str(channel_number)] = {'alpha' : {'entropy' : entropy(np.square(alpha_band)),
                                                                                 'energy'  : alpha_band.sum() * .004},
                                                                      'beta'  : {'entropy' : entropy(np.square(beta_band)),
@@ -180,7 +172,7 @@
                         required=false, default='/home/shaneallcroft/.local/share/dolphin-emu/Pipes/pipe1')
   
   
-  # REAL ACTUAL TODO make the savestates for the game and save them in experiment/media
+  # savestates for the game in experiment/media
   input('Beginning emotive controller test session, please make sure the subject is wearing the ultracortex headset...')
   input('this test will take video recording, please ensure the webcam is properly setup and the "emotive-controller-test" scene on OBS is properly configured...')
   input('refrain as much as possible from any exagerated or pronounced face muscle activity, including clenching jaw, grinning, etc as this will interfere with the eeg readings...')
@@ -231,7 +223,7 @@
   pipe_path = args.pipe_path
   print('post session skeleton initial parsing args:', args)
   subject_id = session_dict['subject roles']['player']['subject id']
-  # REAL ACTUAL TODO make the savestates for the game and save them in experiment/media
+  
   if not os.path.isfile('subjects/' + str(subject_id) + '/calibration_knn.org'):
       print('ERROR calibration knn missing for subject ' + str(subject_id))
       print('calibration knn required for emotive controller use')
@@ -299,13 +291,11 @@
       for channel_number, channel in enumerate(eeg_data_channel_list):
           channel_number = eeg_channels[channel_number]
           numpy_channel = np.array(channel)[int((len(nwb_eeg_ts_raw) - WINDOW_POINT_LENGTH)):len(nwb_eeg_ts_raw)]
-          # REAL ACTUAL TODO if [int((len(nwb_eeg_ts_raw) - WINDOW_POINT_LENGTH)):len(nwb_eeg_ts_raw)]
-          # works you have to make sure you're calibrating with consideration to the same kind of window
-  
-          # ACTUAL TODO TEST vvvvv change back or investigate further
+       
+          # tested, works. you have to make sure you're calibrating with consideration to the same kind of window 
           normalized_channel = (numpy_channel - numpy_channel.min()) / (numpy_channel.max() - numpy_channel.min())
           #^^^^^^ using min-max normalization ^^^^^^
-          window_data = normalized_channel # ACTUAL TODO MAKE SURE YOU SHOULDN"T BE NORMALIZAING HERE INSTEAD
+          window_data = normalized_channel 
           alpha_band = window_data.copy()
           beta_band = window_data.copy()
           gamma_band = window_data.copy()
@@ -322,7 +312,7 @@
           #print(gamma_band)
           #print(theta_band)
           # if needed you should convert the bands to np again if datafilter doesn't return an np array
-          # REAL ACTUAL TODO you gotta do DWT
+          
           #print('alpha band: ', alpha_band)
           #print(entr(list(alpha_band)))
           knn_feature_point['channel ' + str(channel_number)] = {'alpha' : {'entropy' : entropy(np.square(alpha_band)),
@@ -372,7 +362,7 @@
               break
       # alright dope, we have the canon points now
       #knn_voting_dict = {'VALENCE' : {}, 'EXCITATION' : {}}
-      # TODO ACTUAL TODO FIX THE VOTING PROCESS
+      
       valence_total = 0.0
       excitation_total = 0.0
       print('canon inputs: ', canon_input_points)
@@ -393,7 +383,7 @@
       controller_fifo.write(controller_input_str)
       controller_fifo.flush()
       brain_input_count += 1
-      # REAL ACTUAL TODO THIS COULD BE WAY PERFECT if you are voting right
+      
 #+END_SRC
 *** terminal
 #+BEGIN_SRC python
