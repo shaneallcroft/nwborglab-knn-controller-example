@@ -162,7 +162,7 @@
 **** other notes
      level 2
 **** survey
-     fuck you
+     Do you play Mario often? How many days a week?
 ** programmatic
 *** initial
 #+begin_src python
