@@ -73,7 +73,7 @@
   feature_point_list = []
   eeg_data_channel_list = []
 #+END_SRC
-*** lopo
+*** loop
 #+BEGIN_SRC python    
   # the only thing to do in here is make sure the eeg_data_channel list is up to date
   # because the session code is injected after the hardware code, it always will be up to date at the end of each loop iteration
